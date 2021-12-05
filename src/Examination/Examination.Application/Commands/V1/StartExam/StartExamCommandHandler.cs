@@ -1,13 +1,10 @@
 ﻿using Examination.Domain.AggregateModels.ExamResultAggregate;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Examination.Application.Commands.StartExam
+namespace Examination.Application.Commands.V1.StartExam
 {
     public class StartExamCommandHandler : IRequestHandler<StartExamCommand, bool>
     {
