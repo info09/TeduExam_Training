@@ -11,17 +11,18 @@ namespace Examination.Infrastructure.Repositories
 {
     public class ExamRepository : BaseRepository<Exam>, IExamRepository
     {
-        public ExamRepository(IMongoClient mongoClient,
-                                IClientSessionHandle clientSessionHandle,
-                                IOptions<ExamSettings> settings,
-                                IMediator mediator,
-                                string collection) : base(mongoClient, clientSessionHandle, settings, mediator, collection)
+        public ExamRepository(
+            IMongoClient mongoClient,
+            IClientSessionHandle clientSessionHandle,
+            IOptions<ExamSettings> settings,
+            IMediator mediator)
+        : base(mongoClient, clientSessionHandle, settings, mediator, Constants.Collections.Exam)
         {
         }
 
         public async Task<Exam> GetExamByIdAsync(string id)
         {
-            var filter = Builders<Exam>.Filter.Eq(i => i.Id, id);
+            var filter = Builders<Exam>.Filter.Eq(s => s.Id, id);
             return await Collection.Find(filter).FirstOrDefaultAsync();
         }
 
