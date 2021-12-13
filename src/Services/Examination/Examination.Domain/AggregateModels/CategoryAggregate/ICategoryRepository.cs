@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Examination.Domain.AggregateModels.CategoryAggregate
 {
-    public interface ICategoryRepository : IRepository<Category>
+    public interface ICategoryRepository : IRepositoryBase<Category>
     {
         Task<Tuple<List<Category>, long>> GetCategoriesPagingAsync(string searchKeyword, int pageIndex, int pageSize);
 
