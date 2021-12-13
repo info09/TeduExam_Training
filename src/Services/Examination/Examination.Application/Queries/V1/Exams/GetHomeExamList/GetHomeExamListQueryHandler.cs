@@ -1,16 +1,14 @@
-﻿using AutoMapper;
-using Examination.Domain.AggregateModels.ExamAggregate;
-using Examination.Dtos;
-using MediatR;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using Examination.Domain.AggregateModels.ExamAggregate;
+using Examination.Shared.Exams;
+using MediatR;
+using MongoDB.Driver;
 
-namespace Examination.Application.Queries.V1.GetHomeExamList
+namespace Examination.Application.Queries.V1.Exams.GetHomeExamList
 {
     public class GetHomeExamListQueryHandler : IRequestHandler<GetHomeExamListQuery, IEnumerable<ExamDto>>
     {

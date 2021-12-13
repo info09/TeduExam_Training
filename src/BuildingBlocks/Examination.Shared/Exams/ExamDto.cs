@@ -1,7 +1,7 @@
-﻿using Examination.Dtos.Enum;
-using System;
+﻿using System;
+using Examination.Dtos.Enum;
 
-namespace Examination.Dtos
+namespace Examination.Shared.Exams
 {
     public class ExamDto
     {

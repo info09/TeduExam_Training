@@ -1,8 +1,8 @@
-﻿using Examination.Application.Queries.V1.GetHomeExamList;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using Examination.Application.Queries.V1.Exams.GetHomeExamList;
 
 namespace Examination.API.Controllers
 {
