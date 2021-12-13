@@ -1,32 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Examination.API.Filters;
 using Examination.Application.Commands.V1.Exams.StartExam;
 using Examination.Application.Mapping;
+using Examination.Domain.AggregateModels.CategoryAggregate;
 using Examination.Domain.AggregateModels.ExamAggregate;
 using Examination.Domain.AggregateModels.ExamResultAggregate;
 using Examination.Domain.AggregateModels.UserAggregate;
-using Examination.Infrastructure.Repositories;
-using Examination.Infrastructure.SeedWork;
+using Examination.Infrastructure.MongoDb.Repositories;
+using Examination.Infrastructure.MongoDb.SeedWork;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mime;
+using System.Text.Json;
 
 namespace Examination.API
 {
@@ -131,8 +128,8 @@ namespace Examination.API
             services.AddHealthChecks()
                                     .AddCheck("self", () => HealthCheckResult.Healthy())
                                     .AddMongoDb(
-                                                mongodbConnectionString: mongodbConnectionString, 
-                                                name: "mongo", 
+                                                mongodbConnectionString: mongodbConnectionString,
+                                                name: "mongo",
                                                 failureStatus: HealthStatus.Unhealthy
                                                 );
 
@@ -148,6 +145,7 @@ namespace Examination.API
             services.AddTransient<IExamRepository, ExamRepository>();
             services.AddTransient<IExamResultRepository, ExamResultRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
 
         }
 

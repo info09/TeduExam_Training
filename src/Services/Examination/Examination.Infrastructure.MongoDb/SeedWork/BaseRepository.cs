@@ -1,14 +1,14 @@
-﻿using Examination.Domain.SeedWork;
-using MediatR;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Examination.Domain.SeedWork;
+using MediatR;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
-namespace Examination.Infrastructure.SeedWork
+namespace Examination.Infrastructure.MongoDb.SeedWork
 {
     public class BaseRepository<T> : IRepositoryBase<T> where T : Entity, IAggregateRoot
     {

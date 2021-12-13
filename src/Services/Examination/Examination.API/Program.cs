@@ -1,5 +1,4 @@
 using Examination.Infrastructure;
-using Examination.Infrastructure.SeedWork;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +10,8 @@ using Serilog;
 using System;
 using System.IO;
 using System.Reflection;
+using Examination.Infrastructure.MongoDb;
+using Examination.Infrastructure.MongoDb.SeedWork;
 
 namespace Examination.API
 {

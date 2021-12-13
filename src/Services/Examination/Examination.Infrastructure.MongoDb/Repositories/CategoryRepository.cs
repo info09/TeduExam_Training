@@ -1,11 +1,11 @@
 ﻿using Examination.Domain.AggregateModels.CategoryAggregate;
-using Examination.Infrastructure.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Examination.Infrastructure.MongoDb.SeedWork;
 
 namespace Examination.Infrastructure.MongoDb.Repositories
 {

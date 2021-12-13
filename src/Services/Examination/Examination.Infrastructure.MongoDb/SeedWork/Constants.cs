@@ -1,4 +1,4 @@
-﻿namespace Examination.Infrastructure.SeedWork
+﻿namespace Examination.Infrastructure.MongoDb.SeedWork
 {
     public class Constants
     {

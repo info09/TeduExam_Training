@@ -1,13 +1,12 @@
-﻿using Examination.Domain.AggregateModels.ExamAggregate;
-using Examination.Infrastructure.SeedWork;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Examination.Domain.AggregateModels.ExamAggregate;
+using Examination.Infrastructure.MongoDb.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Examination.Infrastructure.Repositories
+namespace Examination.Infrastructure.MongoDb.Repositories
 {
     public class ExamRepository : BaseRepository<Exam>, IExamRepository
     {

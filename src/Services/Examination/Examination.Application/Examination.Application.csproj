@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Behaviors\" />
-    <Folder Include="Commands\V1\Categories\DeleteCategory\" />
-    <Folder Include="Commands\V1\Categories\UpdateCategory\" />
   </ItemGroup>
 
   <ItemGroup>
