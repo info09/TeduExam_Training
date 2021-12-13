@@ -38,9 +38,10 @@ namespace Examination.Infrastructure.MongoDb.Repositories
             return await Collection.Find(filter).FirstOrDefaultAsync();
         }
 
-        public Task<Category> GetCategoryByNameAsync(string name)
+        public async Task<Category> GetCategoryByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            FilterDefinition<Category> filter = Builders<Category>.Filter.Eq(i => i.Name, name);
+            return await Collection.Find(filter).FirstOrDefaultAsync();
         }
     }
 }

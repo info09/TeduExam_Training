@@ -4,7 +4,12 @@
 @inject NavigationManager NavigationManager;
 
 <MudThemeProvider Theme="_themeManager.Theme" />
-<MudDialogProvider />
+<MudDialogProvider FullWidth="true"
+                   MaxWidth="MaxWidth.ExtraSmall"
+                   CloseButton="true"
+                   DisableBackdropClick="true"
+                   NoHeader="true"
+                   Position="DialogPosition.Center" />
 <MudSnackbarProvider />
 
 <MudLayout>
@@ -97,7 +102,7 @@
         StateHasChanged();
     }
 
-	protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         // https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
