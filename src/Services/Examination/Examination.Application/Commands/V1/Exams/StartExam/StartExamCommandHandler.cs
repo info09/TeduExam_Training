@@ -18,7 +18,6 @@ namespace Examination.Application.Commands.V1.Exams.StartExam
         public async Task<bool> Handle(StartExamCommand request, CancellationToken cancellationToken)
         {
             var examResult = await _repository.GetDetails(request.UserId, request.ExamId);
-            _repository.StartTransaction();
 
             try
             {
@@ -34,13 +33,11 @@ namespace Examination.Application.Commands.V1.Exams.StartExam
                     examResult.StartExam(request.FirstName, request.LastName);
                     await _repository.InsertAsync(examResult);
                 }
-
-                await _repository.CommitTransactionAsync(examResult, cancellationToken);
+                
                 return true;
             }
             catch
             {
-                await _repository.AbortTransactionAsync(cancellationToken);
                 throw;
             }
         }

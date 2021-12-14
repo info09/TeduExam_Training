@@ -1,71 +1,43 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using Examination.Domain.SeedWork;
-using MediatR;
+﻿using Examination.Domain.SeedWork;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Examination.Infrastructure.MongoDb.SeedWork
 {
     public class BaseRepository<T> : IRepositoryBase<T> where T : Entity, IAggregateRoot
     {
         private readonly IMongoClient _mongoClient;
-        private readonly IClientSessionHandle _clientSessionHandle;
         private readonly string _collection;
         private readonly ExamSettings _settings;
-        private readonly IMediator _mediator;
 
         public BaseRepository(IMongoClient mongoClient,
-                                 IClientSessionHandle clientSessionHandle,
-                                 IOptions<ExamSettings> settings,
-                                 IMediator mediator,
-                                 string collection)
+            IOptions<ExamSettings> settings,
+            string collection)
         {
             _settings = settings.Value;
-            (_mongoClient, _clientSessionHandle, _collection) = (mongoClient, clientSessionHandle, collection);
+            (_mongoClient, _collection) = (mongoClient, collection);
 
             if (!_mongoClient.GetDatabase(_settings.DatabaseSettings.DatabaseName).ListCollectionNames().ToList().Contains(collection))
                 _mongoClient.GetDatabase(_settings.DatabaseSettings.DatabaseName).CreateCollection(collection);
-
-            _mediator = mediator;
         }
 
         protected virtual IMongoCollection<T> Collection =>
                    _mongoClient.GetDatabase(_settings.DatabaseSettings.DatabaseName).GetCollection<T>(_collection);
 
-        public async Task AbortTransactionAsync(CancellationToken cancellationToken = default)
-        {
-            await _clientSessionHandle.AbortTransactionAsync(cancellationToken);
-        }
 
-        public async Task CommitTransactionAsync(T entity, CancellationToken cancellationToken = default)
-        {
-            await _clientSessionHandle.CommitTransactionAsync(cancellationToken);
-
-            var domainEvents = entity.DomainEvents.ToList();
-
-            entity.ClearDomainEvents();
-
-            foreach (var domainEvent in domainEvents)
-                await _mediator.Publish(domainEvent);
-        }
 
         public async Task DeleteAsync(string id)
         {
-            await Collection.DeleteOneAsync(_clientSessionHandle, f => f.Id == id);
+            await Collection.DeleteOneAsync(f => f.Id == id);
         }
 
         public async Task InsertAsync(T entity)
         {
-            await Collection.InsertOneAsync(_clientSessionHandle, entity);
-        }
-
-        public void StartTransaction()
-        {
-            _clientSessionHandle.StartTransaction();
+            await Collection.InsertOneAsync(entity);
         }
 
         public async Task UpdateAsync(T entity)
@@ -74,7 +46,7 @@ namespace Examination.Infrastructure.MongoDb.SeedWork
             var value = (string)entity.GetType().GetProperty(func.Body.ToString().Split('.')[1])?.GetValue(entity, null);
             var filter = Builders<T>.Filter.Eq(func, value);
 
-            await Collection.ReplaceOneAsync(_clientSessionHandle, filter, entity);
+            await Collection.ReplaceOneAsync(filter, entity);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Examination.Domain.AggregateModels.UserAggregate;
+﻿using Examination.Domain.AggregateModels.UserAggregate;
 using Examination.Infrastructure.MongoDb.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Threading.Tasks;
 
 namespace Examination.Infrastructure.MongoDb.Repositories
 {
@@ -11,9 +11,9 @@ namespace Examination.Infrastructure.MongoDb.Repositories
     {
         public UserRepository(
             IMongoClient mongoClient,
-        IClientSessionHandle clientSessionHandle,
-        IOptions<ExamSettings> settings, IMediator mediator)
-        : base(mongoClient, clientSessionHandle, settings, mediator, Constants.Collections.User)
+            IOptions<ExamSettings> settings,
+            IMediator mediator)
+            : base(mongoClient, settings, Constants.Collections.User)
         {
         }
 

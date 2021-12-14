@@ -10,16 +10,19 @@ using System.Threading.Tasks;
 
 namespace Identity.STS.Identity.Services
 {
-    public class CustomeProfileService : IProfileService
+    public class CustomProfileService : IProfileService
     {
         private readonly UserManager<UserIdentity> _userManager;
-        private readonly ILogger<CustomeProfileService> _logger;
+        private readonly ILogger<CustomProfileService> _logger;
 
-        public CustomeProfileService(UserManager<UserIdentity> userManager, ILogger<CustomeProfileService> logger)
+        public CustomProfileService(
+            UserManager<UserIdentity> userManager,
+            ILogger<CustomProfileService> logger)
         {
             _userManager = userManager;
             _logger = logger;
         }
+
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             _logger.LogDebug("Get profile called for subject {subject} from client {client} with claim types {claimTypes} via {caller}",
