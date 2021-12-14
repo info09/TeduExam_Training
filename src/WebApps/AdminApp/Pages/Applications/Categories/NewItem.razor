@@ -13,15 +13,15 @@
 		<EditForm Model="model" OnValidSubmit="OnValidSubmit">
 			<MudCard Elevation="25" Style="height:100%;">
 				<MudCardHeader>
-					<CardHeaderContent>
+					@*<CardHeaderContent>
 						<MudText Typo="Typo.h6">Please fill fully information</MudText>
-					</CardHeaderContent>
+					</CardHeaderContent>*@
 				</MudCardHeader>
 				<MudCardContent Class="px-5">
 					<DataAnnotationsValidator />
-					<MudTextField Label="Name" Required="true" RequiredError="Name is required" HelperText="Example: C# Programming"
+					<MudTextField Label="Name" Required="true" RequiredError="Name is required"
 					              @bind-Value="model.Name" For="@(() => model.Name)" />
-					<MudTextField Label="URL Path" Required="true" RequiredError="Name is required" HelperText="Example: csharp-programming"
+					<MudTextField Label="URL Path" Required="true" RequiredError="Name is required"
 					              @bind-Value="model.UrlPath" For="@(() => model.UrlPath)" />
 				</MudCardContent>
 				<MudCardActions>
