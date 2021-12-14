@@ -23,8 +23,4 @@
     <ProjectReference Include="..\..\BuildingBlocks\Examination.Shared\Examination.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Applications\Categories\" />
-  </ItemGroup>
-
 </Project>
