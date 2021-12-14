@@ -1,0 +1,46 @@
+﻿using AutoMapper;
+using Examination.Application.Queries.V1.Questions.GetQuestionById;
+using Examination.Domain.AggregateModels.QuestionAggregate;
+using Examination.Shared.Questions;
+using Examination.Shared.SeedWork;
+using MediatR;
+using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Examination.Application.Queries.V1.Questions.GetQuestionsPaging
+{
+    public class GetQuestionsPagingQueryHandler : IRequestHandler<GetQuestionsPagingQuery, PagedList<QuestionDto>>
+    {
+        private readonly IQuestionRepository _questionRepository;
+        private readonly IClientSessionHandle _sessionHandle;
+        private readonly IMapper _mapper;
+        private readonly ILogger<GetQuestionByIdQueryHandler> _logger;
+
+        public GetQuestionsPagingQueryHandler(IQuestionRepository questionRepository, IClientSessionHandle sessionHandle, IMapper mapper, ILogger<GetQuestionByIdQueryHandler> logger)
+        {
+            _questionRepository = questionRepository ?? throw new ArgumentNullException(nameof(questionRepository));
+            _sessionHandle = sessionHandle ?? throw new ArgumentNullException(nameof(sessionHandle));
+            _mapper = mapper;
+            _logger = logger;
+        }
+
+        public async Task<PagedList<QuestionDto>> Handle(GetQuestionsPagingQuery request, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("BEGIN: GetQuestionsPagingQueryHandler");
+
+            var result =
+                await _questionRepository.GetQuestionsPagingAsync(request.SearchKeyword, request.PageIndex,
+                    request.PageSize);
+
+            var items = _mapper.Map<List<QuestionDto>>(result.Item1);
+
+            _logger.LogInformation("END: GetQuestionsPagingQueryHandler");
+
+            return new PagedList<QuestionDto>(items, result.Item2, request.PageIndex, request.PageSize);
+        }
+    }
+}

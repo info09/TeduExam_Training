@@ -1,14 +1,15 @@
-﻿using Examination.Shared.Categories;
-using MediatR;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Examination.Application.Queries.V1.Exams.Categories.GetCategoryById;
 using Examination.Domain.AggregateModels.CategoryAggregate;
-using MongoDB.Driver;
+using Examination.Shared.Categories;
+using MediatR;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
-namespace Examination.Application.Queries.V1.Exams.Categories.GetCategoryById
+namespace Examination.Application.Queries.V1.Categories.GetCategoryById
 {
     public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, CategoryDto>
     {

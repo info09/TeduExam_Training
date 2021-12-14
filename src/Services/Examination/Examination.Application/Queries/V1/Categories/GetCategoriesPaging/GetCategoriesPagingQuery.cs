@@ -2,7 +2,7 @@
 using Examination.Shared.SeedWork;
 using MediatR;
 
-namespace Examination.Application.Queries.V1.Exams.Categories.GetCategoriesPaging
+namespace Examination.Application.Queries.V1.Categories.GetCategoriesPaging
 {
     public class GetCategoriesPagingQuery : IRequest<PagedList<CategoryDto>>
     {

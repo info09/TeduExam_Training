@@ -1,5 +1,4 @@
-﻿using Examination.Application.Queries.V1.Exams.Categories.GetCategoriesPaging;
-using Examination.Application.Queries.V1.Exams.Categories.GetCategoryById;
+﻿using Examination.Application.Queries.V1.Exams.Categories.GetCategoryById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using Examination.Application.Commands.V1.Categories.CreateCategory;
 using Examination.Application.Commands.V1.Categories.DeleteCategory;
 using Examination.Application.Commands.V1.Categories.UpdateCategory;
+using Examination.Application.Queries.V1.Categories.GetCategoriesPaging;
 using Examination.Shared.Categories;
 
 namespace Examination.API.Controllers.V1

@@ -1,16 +1,16 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using Examination.Domain.AggregateModels.CategoryAggregate;
 using Examination.Shared.Categories;
 using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Examination.Application.Queries.V1.Exams.Categories.GetCategoriesPaging
+namespace Examination.Application.Queries.V1.Categories.GetCategoriesPaging
 {
     public class GetCategoriesPagingQueryHandler : IRequestHandler<GetCategoriesPagingQuery, PagedList<CategoryDto>>
     {
