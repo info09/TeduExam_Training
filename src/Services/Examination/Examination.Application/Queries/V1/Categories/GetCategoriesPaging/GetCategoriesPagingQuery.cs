@@ -11,5 +11,12 @@ namespace Examination.Application.Queries.V1.Categories.GetCategoriesPaging
         public int PageSize { get; set; }
 
         public int PageIndex { get; set; }
+
+        public GetCategoriesPagingQuery(string searchKeyword, int pageSize, int pageIndex)
+        {
+            SearchKeyword = searchKeyword;
+            PageSize = pageSize;
+            PageIndex = pageIndex;
+        }
     }
 }

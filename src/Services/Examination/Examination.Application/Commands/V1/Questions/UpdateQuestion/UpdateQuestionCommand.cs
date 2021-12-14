@@ -21,5 +21,15 @@ namespace Examination.Application.Commands.V1.Questions.UpdateQuestion
         public List<AnswerDto> Answers { get; } = new List<AnswerDto>();
 
         public string Explain { get; set; }
+
+        public UpdateQuestionCommand(string id, string content, string categoryId, QuestionType questionType, Level level, string explain)
+        {
+            Id = id;
+            Content = content;
+            CategoryId = categoryId;
+            QuestionType = questionType;
+            Level = level;
+            Explain = explain;
+        }
     }
 }

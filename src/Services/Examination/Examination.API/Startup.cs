@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Text.Json;
+using Examination.Domain.AggregateModels.QuestionAggregate;
 
 namespace Examination.API
 {
@@ -146,6 +147,7 @@ namespace Examination.API
             services.AddTransient<IExamResultRepository, ExamResultRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
 
         }
 
@@ -164,11 +166,10 @@ namespace Examination.API
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseRouting();
             app.UseCors("CorsPolicy");
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
@@ -181,7 +182,6 @@ namespace Examination.API
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-
                 endpoints.MapHealthChecks("/hc-details",
                             new HealthCheckOptions
                             {

@@ -2,14 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using Examination.API.Controllers.V1;
 using Examination.Application.Queries.V1.Exams.GetHomeExamList;
 
 namespace Examination.API.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiController]
-    [ApiVersion("1.0")]
-    public class ExamsController : ControllerBase
+    public class ExamsController : BasesController
     {
         private readonly IMediator _mediator;
         private readonly ILogger<ExamsController> _logger;

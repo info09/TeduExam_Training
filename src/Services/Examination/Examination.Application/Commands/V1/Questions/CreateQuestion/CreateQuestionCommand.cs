@@ -19,5 +19,14 @@ namespace Examination.Application.Commands.V1.Questions.CreateQuestion
         [Required] public List<AnswerDto> Answers { get; } = new List<AnswerDto>();
 
         public string Explain { get; set; }
+
+        public CreateQuestionCommand(string content, string categoryId, QuestionType questionType, Level level, string explain)
+        {
+            Content = content;
+            CategoryId = categoryId;
+            QuestionType = questionType;
+            Level = level;
+            Explain = explain;
+        }
     }
 }

@@ -11,10 +11,7 @@ using Examination.Shared.Categories;
 
 namespace Examination.API.Controllers.V1
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiController]
-    [ApiVersion("1.0")]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : BasesController
     {
         private readonly IMediator _mediator;
         private readonly ILogger<CategoriesController> _logger;
@@ -26,9 +23,11 @@ namespace Examination.API.Controllers.V1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCategoriesPagingAsync([FromQuery] GetCategoriesPagingQuery query)
+        public async Task<IActionResult> GetCategoriesPagingAsync([FromQuery] CategorySearch categorySearch)
         {
             _logger.LogInformation("BEGIN: GetCategoriesAsync Controller");
+
+            var query = new GetCategoriesPagingQuery(categorySearch.Name, categorySearch.PageSize, categorySearch.PageNumber);
 
             var result = await _mediator.Send(query);
 
