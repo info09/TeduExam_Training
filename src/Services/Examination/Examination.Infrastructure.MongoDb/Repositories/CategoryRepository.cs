@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Examination.Infrastructure.MongoDb.SeedWork;
+using Examination.Shared.SeedWork;
 
 namespace Examination.Infrastructure.MongoDb.Repositories
 {
@@ -19,7 +20,7 @@ namespace Examination.Infrastructure.MongoDb.Repositories
         {
         }
 
-        public async Task<Tuple<List<Category>, long>> GetCategoriesPagingAsync(string searchKeyword, int pageIndex, int pageSize)
+        public async Task<PagedList<Category>> GetCategoriesPagingAsync(string searchKeyword, int pageIndex, int pageSize)
         {
             FilterDefinition<Category> filter = Builders<Category>.Filter.Empty;
             if (!string.IsNullOrEmpty(searchKeyword))
@@ -29,7 +30,7 @@ namespace Examination.Infrastructure.MongoDb.Repositories
 
             var totalRow = await Collection.Find(filter).CountDocumentsAsync();
             var items = await Collection.Find(filter).Skip((pageIndex - 1) * pageSize).Limit(pageSize).ToListAsync();
-            return new Tuple<List<Category>, long>(items, totalRow);
+            return new PagedList<Category>(items, totalRow, pageIndex, pageSize);
         }
 
         public async Task<Category> GetCategoryByIdAsync(string id)
@@ -42,6 +43,13 @@ namespace Examination.Infrastructure.MongoDb.Repositories
         {
             FilterDefinition<Category> filter = Builders<Category>.Filter.Eq(i => i.Name, name);
             return await Collection.Find(filter).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Category>> GetAllCategoriesAsync()
+        {
+            var items = await Collection.AsQueryable().ToListAsync();
+
+            return items;
         }
     }
 }

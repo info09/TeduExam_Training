@@ -108,8 +108,8 @@
 		try
 		{
 			var pagingResponse = await QuestionService.GetQuestionsPagingAsync(QuestionSearch);
-			Elements = pagingResponse.Items;
-			MetaData = pagingResponse.MetaData;
+			Elements = pagingResponse.ResultObj.Items;
+			MetaData = pagingResponse.ResultObj.MetaData;
 			loading = false;
 		}
 		catch (Exception ex)

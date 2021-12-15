@@ -1,13 +1,13 @@
 ﻿using Examination.Domain.AggregateModels.CategoryAggregate;
+using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Examination.Application.Commands.V1.Categories.UpdateCategory
 {
-    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, bool>
+    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, ApiResult<bool>>
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly ILogger<UpdateCategoryCommandHandler> _logger;
@@ -18,27 +18,21 @@ namespace Examination.Application.Commands.V1.Categories.UpdateCategory
             _logger = logger;
         }
 
-        public async Task<bool> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResult<bool>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
             var itemToUpdate = await _categoryRepository.GetCategoryByIdAsync(request.Id);
             if (itemToUpdate == null)
             {
                 _logger.LogError($"Item is not found {request.Id}");
-                return false;
+                return new ApiErrorResult<bool>($"Item is not found {request.Id}");
             }
 
             itemToUpdate.Name = request.Name;
             itemToUpdate.UrlPath = request.UrlPath;
-            try
-            {
-                await _categoryRepository.UpdateAsync(itemToUpdate);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw;
-            }
+
+            await _categoryRepository.UpdateAsync(itemToUpdate);
+            return new ApiSuccessResult<bool>(true, "Update successful");
+
         }
     }
 }

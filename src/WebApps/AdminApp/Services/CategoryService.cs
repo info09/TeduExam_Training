@@ -11,7 +11,7 @@ namespace AdminApp.Services
 {
     public class CategoryService : ICategoryService
     {
-        public HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         public CategoryService(HttpClient httpClient)
         {
@@ -30,13 +30,13 @@ namespace AdminApp.Services
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<CategoryDto> GetCategoryByIdAsync(string id)
+        public async Task<ApiResult<CategoryDto>> GetCategoryByIdAsync(string id)
         {
-            var result = await _httpClient.GetFromJsonAsync<CategoryDto>($"/api/v1/categories/{id}");
+            var result = await _httpClient.GetFromJsonAsync<ApiResult<CategoryDto>>($"/api/v1/categories/{id}");
             return result;
         }
 
-        public async Task<PagedList<CategoryDto>> GetCategoriesPagingAsync(CategorySearch searchInput)
+        public async Task<ApiResult<PagedList<CategoryDto>>> GetCategoriesPagingAsync(CategorySearch searchInput)
         {
             var queryStringParam = new Dictionary<string, string>
             {
@@ -50,7 +50,7 @@ namespace AdminApp.Services
 
             string url = QueryHelpers.AddQueryString("/api/v1/categories", queryStringParam);
 
-            var result = await _httpClient.GetFromJsonAsync<PagedList<CategoryDto>>(url);
+            var result = await _httpClient.GetFromJsonAsync<ApiResult<PagedList<CategoryDto>>>(url);
             return result;
         }
 

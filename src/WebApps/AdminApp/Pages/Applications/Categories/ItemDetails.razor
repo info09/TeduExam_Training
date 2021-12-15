@@ -72,9 +72,10 @@
 	{
 		loading = true;
 		var item = await CategoryService.GetCategoryByIdAsync(id);
-		model.Id = item.Id;
-		model.Name = item.Name;
-		model.UrlPath = item.UrlPath;
+		var result = item.ResultObj;
+		model.Id = result.Id;
+		model.Name = result.Name;
+		model.UrlPath = result.UrlPath;
 		loading = false;
 	}
 }

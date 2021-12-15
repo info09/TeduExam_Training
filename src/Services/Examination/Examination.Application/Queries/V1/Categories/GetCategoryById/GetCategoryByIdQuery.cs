@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Examination.Shared.Categories;
+﻿using Examination.Shared.Categories;
+using Examination.Shared.SeedWork;
 using MediatR;
 
-namespace Examination.Application.Queries.V1.Exams.Categories.GetCategoryById
+namespace Examination.Application.Queries.V1.Categories.GetCategoryById
 {
-    public class GetCategoryByIdQuery : IRequest<CategoryDto>, IRequest<Unit>
+    public class GetCategoryByIdQuery : IRequest<ApiResult<CategoryDto>>
     {
         public string Id { get; set; }
 

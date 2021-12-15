@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Examination.Domain.AggregateModels.QuestionAggregate;
 using Examination.Shared.Questions;
+using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Examination.Application.Commands.V1.Questions.UpdateQuestion
 {
-    public class UpdateQuestionCommandHandler : IRequestHandler<UpdateQuestionCommand, bool>
+    public class UpdateQuestionCommandHandler : IRequestHandler<UpdateQuestionCommand, ApiResult<bool>>
     {
         private readonly IQuestionRepository _questionRepository;
         private readonly IMapper _mapper;
@@ -23,13 +23,13 @@ namespace Examination.Application.Commands.V1.Questions.UpdateQuestion
             _logger = logger;
         }
 
-        public async Task<bool> Handle(UpdateQuestionCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResult<bool>> Handle(UpdateQuestionCommand request, CancellationToken cancellationToken)
         {
             var itemToUpdate = await _questionRepository.GetQuestionByIdAsync(request.Id);
             if (itemToUpdate == null)
             {
                 _logger.LogError($"Item is not found {request.Id}");
-                return false;
+                return new ApiErrorResult<bool>($"Item is not found {request.Id}");
             }
 
             itemToUpdate.Content = request.Content;
@@ -40,16 +40,10 @@ namespace Examination.Application.Commands.V1.Questions.UpdateQuestion
             var answers = _mapper.Map<List<AnswerDto>, List<Answer>>(request.Answers);
             itemToUpdate.Answers = answers;
             itemToUpdate.Explain = request.Explain;
-            try
-            {
-                await _questionRepository.UpdateAsync(itemToUpdate);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw;
-            }
+
+            await _questionRepository.UpdateAsync(itemToUpdate);
+            return new ApiSuccessResult<bool>(true, "Update success");
+
         }
     }
 }

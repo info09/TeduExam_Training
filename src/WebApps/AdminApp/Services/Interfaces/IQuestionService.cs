@@ -6,9 +6,9 @@ namespace AdminApp.Services.Interfaces
 {
     public interface IQuestionService
     {
-        Task<PagedList<QuestionDto>> GetQuestionsPagingAsync(QuestionSearch questionSearch);
+        Task<ApiResult<PagedList<QuestionDto>>> GetQuestionsPagingAsync(QuestionSearch questionSearch);
 
-        Task<QuestionDto> GetQuestionByIdAsync(string id);
+        Task<ApiResult<QuestionDto>> GetQuestionByIdAsync(string id);
 
         Task<bool> CreateAsync(CreateQuestionRequest request);
 

@@ -1,11 +1,7 @@
+using Examination.API.Extensions;
 using Examination.API.Filters;
 using Examination.Application.Commands.V1.Exams.StartExam;
 using Examination.Application.Mapping;
-using Examination.Domain.AggregateModels.CategoryAggregate;
-using Examination.Domain.AggregateModels.ExamAggregate;
-using Examination.Domain.AggregateModels.ExamResultAggregate;
-using Examination.Domain.AggregateModels.UserAggregate;
-using Examination.Infrastructure.MongoDb.Repositories;
 using Examination.Infrastructure.MongoDb.SeedWork;
 using HealthChecks.UI.Client;
 using MediatR;
@@ -24,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Text.Json;
-using Examination.Domain.AggregateModels.QuestionAggregate;
 
 namespace Examination.API
 {
@@ -45,6 +40,7 @@ namespace Examination.API
             var server = Configuration.GetValue<string>("DatabaseSettings:Server");
             var databaseName = Configuration.GetValue<string>("DatabaseSettings:DatabaseName");
             var mongodbConnectionString = "mongodb://" + user + ":" + password + "@" + server + "/" + databaseName + "?authSource=admin";
+            services.AddHttpContextAccessor();
 
             services.AddApiVersioning(options =>
             {
@@ -67,6 +63,7 @@ namespace Examination.API
             {
                 return new MongoClient(mongodbConnectionString);
             });
+
             services.AddScoped(c => c.GetService<IMongoClient>()?.StartSession());
             services.AddAutoMapper(cfg => { cfg.AddProfile(new MappingProfile()); });
             services.AddMediatR(typeof(StartExamCommandHandler).Assembly);
@@ -83,8 +80,8 @@ namespace Examination.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Examination.API", Version = "v1" });
-                c.SwaggerDoc("v2", new OpenApiInfo { Title = "Examination.API", Version = "v2" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Examination.API V1", Version = "v1" });
+                c.SwaggerDoc("v2", new OpenApiInfo { Title = "Examination.API V2", Version = "v2" });
 
                 c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
@@ -103,13 +100,16 @@ namespace Examination.API
                     }
                 });
                 c.OperationFilter<AuthorizeCheckOperationFilter>();
+
             });
 
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults
+                    .AuthenticationScheme;
+                options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults
+                    .AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
                 options.Authority = identityUrl;
@@ -123,16 +123,16 @@ namespace Examination.API
                 };
             });
 
+
+
             services.Configure<ExamSettings>(Configuration);
 
-            //Health Check
+            //Health check
             services.AddHealthChecks()
-                                    .AddCheck("self", () => HealthCheckResult.Healthy())
-                                    .AddMongoDb(
-                                                mongodbConnectionString: mongodbConnectionString,
-                                                name: "mongo",
-                                                failureStatus: HealthStatus.Unhealthy
-                                                );
+                    .AddCheck("self", () => HealthCheckResult.Healthy())
+                    .AddMongoDb(mongodbConnectionString: mongodbConnectionString,
+                                name: "mongo",
+                                failureStatus: HealthStatus.Unhealthy);
 
             services.AddHealthChecksUI(opt =>
             {
@@ -141,14 +141,10 @@ namespace Examination.API
                 opt.SetApiMaxActiveRequests(1); //api requests concurrency
 
                 opt.AddHealthCheckEndpoint("Exam API", "/hc"); //map health check api
-            }).AddInMemoryStorage();
+            })
+                    .AddInMemoryStorage();
 
-            services.AddTransient<IExamRepository, ExamRepository>();
-            services.AddTransient<IExamResultRepository, ExamResultRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<IQuestionRepository, QuestionRepository>();
-
+            services.RegisterCustomServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -164,7 +160,7 @@ namespace Examination.API
                     c.SwaggerEndpoint("/swagger/v2/swagger.json", "Examination.API v2");
                 });
             }
-
+            app.UseErrorWrapping();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseRouting();

@@ -77,8 +77,8 @@
 		try
 		{
 			var pagingResponse = await CategoryService.GetCategoriesPagingAsync(CategorySearch);
-			Elements = pagingResponse.Items;
-			MetaData = pagingResponse.MetaData;
+			Elements = pagingResponse.ResultObj.Items;
+			MetaData = pagingResponse.ResultObj.MetaData;
 			loading = false;
 		}
 		catch (Exception ex)
