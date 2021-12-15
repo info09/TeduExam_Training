@@ -6,6 +6,8 @@ namespace Examination.Shared.Questions
 {
     public class QuestionDto
     {
+        public string Id { get; set; }
+
         public string Content { get; set; }
 
         public QuestionType QuestionType { get; set; }
@@ -21,5 +23,7 @@ namespace Examination.Shared.Questions
         public DateTime DateCreated { get; set; }
 
         public string OwnerUserId { get; set; }
+
+        public string CategoryName { get; set; }
     }
 }

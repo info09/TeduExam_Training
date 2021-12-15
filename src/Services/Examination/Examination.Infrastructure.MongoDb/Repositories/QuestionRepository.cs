@@ -30,7 +30,7 @@ namespace Examination.Infrastructure.MongoDb.Repositories
                 filter = Builders<Question>.Filter.Eq(i => i.CategoryId, categoryId);
 
             var totalRow = await Collection.Find(filter).CountDocumentsAsync();
-            var items = await Collection.Find(filter).Skip((pageIndex - 1) * pageSize).Limit(pageSize).ToListAsync();
+            var items = await Collection.Find(filter).SortByDescending(i => i.DateCreated).Skip((pageIndex - 1) * pageSize).Limit(pageSize).ToListAsync();
 
             return new PagedList<Question>(items, totalRow, pageIndex, pageSize);
         }

@@ -34,6 +34,9 @@ namespace Examination.Domain.AggregateModels.QuestionAggregate
         [BsonElement("categoryId")]
         public string CategoryId { get; set; }
 
+        [BsonElement("categoryName")]
+        public string CategoryName { get; set; }
+
         [BsonElement("answers")]
         public IEnumerable<Answer> Answers { set; get; }
 
