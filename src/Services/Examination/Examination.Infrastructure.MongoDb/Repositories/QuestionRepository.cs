@@ -1,10 +1,9 @@
 ﻿using Examination.Domain.AggregateModels.QuestionAggregate;
 using Examination.Infrastructure.MongoDb.SeedWork;
+using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Examination.Infrastructure.MongoDb.Repositories
@@ -19,17 +18,21 @@ namespace Examination.Infrastructure.MongoDb.Repositories
         {
         }
 
-        public async Task<Tuple<List<Question>, long>> GetQuestionsPagingAsync(string searchKeyword, int pageIndex, int pageSize)
+        public async Task<PagedList<Question>> GetQuestionsPagingAsync(string categoryId, string searchKeyword, int pageIndex, int pageSize)
         {
             FilterDefinition<Question> filter = Builders<Question>.Filter.Empty;
             if (!string.IsNullOrEmpty(searchKeyword))
             {
-                filter = Builders<Question>.Filter.Eq(i => i.Content, searchKeyword);
+                filter = Builders<Question>.Filter.Where(i => i.Content.ToLower().Contains(searchKeyword.ToLower()));
             }
+
+            if (!string.IsNullOrEmpty(categoryId))
+                filter = Builders<Question>.Filter.Eq(i => i.CategoryId, categoryId);
 
             var totalRow = await Collection.Find(filter).CountDocumentsAsync();
             var items = await Collection.Find(filter).Skip((pageIndex - 1) * pageSize).Limit(pageSize).ToListAsync();
-            return new Tuple<List<Question>, long>(items, totalRow);
+
+            return new PagedList<Question>(items, totalRow, pageIndex, pageSize);
         }
 
         public async Task<Question> GetQuestionByIdAsync(string id)

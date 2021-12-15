@@ -26,7 +26,7 @@ namespace Examination.API.Controllers.V1
         public async Task<IActionResult> GetQuestionsPagingAsync([FromQuery] QuestionSearch questionSearch)
         {
             _logger.LogInformation("BEGIN: GetQuestionsPagingAsync");
-            var query = new GetQuestionsPagingQuery(questionSearch.Name, questionSearch.PageSize,
+            var query = new GetQuestionsPagingQuery(questionSearch.CategoryId, questionSearch.Content, questionSearch.PageSize,
                 questionSearch.PageNumber);
             var result = await _mediator.Send(query);
             _logger.LogInformation("END: GetQuestionsPagingAsync");

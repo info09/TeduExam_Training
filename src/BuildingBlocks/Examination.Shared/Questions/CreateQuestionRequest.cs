@@ -1,6 +1,6 @@
-﻿using Examination.Dtos.Enum;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Examination.Shared.Enum;
 
 namespace Examination.Shared.Questions
 {

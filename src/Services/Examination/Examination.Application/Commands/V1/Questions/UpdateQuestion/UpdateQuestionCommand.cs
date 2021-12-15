@@ -1,7 +1,7 @@
-﻿using Examination.Dtos.Enum;
-using Examination.Shared.Questions;
+﻿using Examination.Shared.Questions;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Examination.Shared.Enum;
 using MediatR;
 
 namespace Examination.Application.Commands.V1.Questions.UpdateQuestion

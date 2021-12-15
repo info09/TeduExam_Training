@@ -1,4 +1,4 @@
-﻿namespace Examination.Dtos.Enum
+﻿namespace Examination.Shared.Enum
 {
     public enum Level
     {

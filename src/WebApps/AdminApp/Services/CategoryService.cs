@@ -18,21 +18,16 @@ namespace AdminApp.Services
             _httpClient = httpClient;
         }
 
-        public async Task<PagedList<CategoryDto>> GetCategoriesPagingAsync(CategorySearch taskListSearch)
+        public async Task<bool> CreateAsync(CreateCategoryRequest request)
         {
-            var queryStringParam = new Dictionary<string, string>
-            {
-                ["pageIndex"] = taskListSearch.PageNumber.ToString(),
-                ["pageSize"] = taskListSearch.PageSize.ToString()
-            };
+            var result = await _httpClient.PostAsJsonAsync("/api/v1/categories", request);
+            return result.IsSuccessStatusCode;
+        }
 
-            if (!string.IsNullOrEmpty(taskListSearch.Name))
-                queryStringParam.Add("searchKeyword", taskListSearch.Name);
-
-            string url = QueryHelpers.AddQueryString("/api/v1/categories", queryStringParam);
-
-            var result = await _httpClient.GetFromJsonAsync<PagedList<CategoryDto>>(url);
-            return result;
+        public async Task<bool> DeleteAsync(string id)
+        {
+            var result = await _httpClient.DeleteAsync($"/api/v1/categories/{id}");
+            return result.IsSuccessStatusCode;
         }
 
         public async Task<CategoryDto> GetCategoryByIdAsync(string id)
@@ -41,21 +36,27 @@ namespace AdminApp.Services
             return result;
         }
 
-        public async Task<bool> CreateAsync(CreateCategoryRequest request)
+        public async Task<PagedList<CategoryDto>> GetCategoriesPagingAsync(CategorySearch searchInput)
         {
-            var result = await _httpClient.PostAsJsonAsync("/api/v1/categories", request);
-            return result.IsSuccessStatusCode;
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["pageIndex"] = searchInput.PageNumber.ToString(),
+                ["pageSize"] = searchInput.PageSize.ToString()
+            };
+
+            if (!string.IsNullOrEmpty(searchInput.Name))
+                queryStringParam.Add("searchKeyword", searchInput.Name);
+
+
+            string url = QueryHelpers.AddQueryString("/api/v1/categories", queryStringParam);
+
+            var result = await _httpClient.GetFromJsonAsync<PagedList<CategoryDto>>(url);
+            return result;
         }
 
         public async Task<bool> UpdateAsync(UpdateCategoryRequest request)
         {
             var result = await _httpClient.PutAsJsonAsync($"/api/v1/categories", request);
-            return result.IsSuccessStatusCode;
-        }
-
-        public async Task<bool> DeleteAsync(string id)
-        {
-            var result = await _httpClient.DeleteAsync($"/api/v1/categories/{id}");
             return result.IsSuccessStatusCode;
         }
     }

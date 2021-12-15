@@ -1,5 +1,5 @@
 ﻿using System;
-using Examination.Dtos.Enum;
+using Examination.Shared.Enum;
 
 namespace Examination.Shared.Exams
 {

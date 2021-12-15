@@ -1,9 +1,9 @@
 ﻿using Examination.Domain.SeedWork;
-using Examination.Dtos.Enum;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Examination.Shared.Enum;
 
 namespace Examination.Domain.AggregateModels.QuestionAggregate
 {

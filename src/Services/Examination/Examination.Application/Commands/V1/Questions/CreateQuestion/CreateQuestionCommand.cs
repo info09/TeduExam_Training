@@ -1,8 +1,8 @@
-﻿using Examination.Dtos.Enum;
-using Examination.Shared.Questions;
+﻿using Examination.Shared.Questions;
 using MediatR;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Examination.Shared.Enum;
 
 namespace Examination.Application.Commands.V1.Questions.CreateQuestion
 {
