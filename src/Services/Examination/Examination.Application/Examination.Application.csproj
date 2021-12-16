@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Behaviors\" />
+    <Folder Include="Queries\V1\Categories\GetAllCategories\" />
   </ItemGroup>
 
   <ItemGroup>

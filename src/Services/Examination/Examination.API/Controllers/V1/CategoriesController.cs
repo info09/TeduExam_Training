@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Examination.Application.Commands.V1.Categories.CreateCategory;
 using Examination.Application.Commands.V1.Categories.DeleteCategory;
 using Examination.Application.Commands.V1.Categories.UpdateCategory;
+using Examination.Application.Queries.V1.Categories.GetAllCategories;
 using Examination.Application.Queries.V1.Categories.GetCategoriesPaging;
 using Examination.Application.Queries.V1.Categories.GetCategoryById;
 using Examination.Shared.Categories;
@@ -23,6 +24,18 @@ namespace Examination.API.Controllers.V1
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllCategoriesAsync()
+        {
+            _logger.LogInformation("BEGIN: GetAllCategoriesAsync Controller");
+            var query = new GetAllCategoriesQuery();
+            var result = await _mediator.Send(query);
+
+            _logger.LogInformation("END: GetAllCategoriesAsync Controller");
+
+            return Ok(result);
+        }
+
+        [HttpGet("paging")]
         public async Task<IActionResult> GetCategoriesPagingAsync([FromQuery] CategorySearch categorySearch)
         {
             _logger.LogInformation("BEGIN: GetCategoriesAsync Controller");

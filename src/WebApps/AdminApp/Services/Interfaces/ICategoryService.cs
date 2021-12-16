@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Examination.Shared.Categories;
 using Examination.Shared.SeedWork;
 
@@ -11,5 +12,6 @@ namespace AdminApp.Services.Interfaces
         Task<bool> CreateAsync(CreateCategoryRequest request);
         Task<bool> UpdateAsync(UpdateCategoryRequest request);
         Task<bool> DeleteAsync(string id);
+        Task<ApiResult<List<CategoryDto>>> GetAllCategoriesAsync();
     }
 }

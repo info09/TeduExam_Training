@@ -30,6 +30,12 @@ namespace AdminApp.Services
             return result.IsSuccessStatusCode;
         }
 
+        public async Task<ApiResult<List<CategoryDto>>> GetAllCategoriesAsync()
+        {
+            var result = await _httpClient.GetFromJsonAsync<ApiResult<List<CategoryDto>>>("/api/v1/categories");
+            return result;
+        }
+
         public async Task<ApiResult<CategoryDto>> GetCategoryByIdAsync(string id)
         {
             var result = await _httpClient.GetFromJsonAsync<ApiResult<CategoryDto>>($"/api/v1/categories/{id}");
@@ -48,7 +54,7 @@ namespace AdminApp.Services
                 queryStringParam.Add("searchKeyword", searchInput.Name);
 
 
-            string url = QueryHelpers.AddQueryString("/api/v1/categories", queryStringParam);
+            string url = QueryHelpers.AddQueryString("/api/v1/categories/paging", queryStringParam);
 
             var result = await _httpClient.GetFromJsonAsync<ApiResult<PagedList<CategoryDto>>>(url);
             return result;
