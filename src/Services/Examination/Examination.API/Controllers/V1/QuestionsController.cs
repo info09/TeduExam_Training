@@ -60,7 +60,7 @@ namespace Examination.API.Controllers.V1
         {
             _logger.LogInformation("BEGIN: UpdateQuestionAsync");
             var command = new UpdateQuestionCommand(request.Id, request.Content, request.CategoryId,
-                request.QuestionType, request.Level, request.Explain);
+                request.QuestionType, request.Level, request.Answers, request.Explain);
 
             var result = await _mediator.Send(command);
             _logger.LogInformation("END: UpdateQuestionAsync");

@@ -20,14 +20,15 @@ namespace Examination.Infrastructure.MongoDb.Repositories
 
         public async Task<PagedList<Question>> GetQuestionsPagingAsync(string categoryId, string searchKeyword, int pageIndex, int pageSize)
         {
-            FilterDefinition<Question> filter = Builders<Question>.Filter.Empty;
+            var builder = Builders<Question>.Filter;
+            FilterDefinition<Question> filter = builder.Empty;
             if (!string.IsNullOrEmpty(searchKeyword))
             {
-                filter = Builders<Question>.Filter.Where(i => i.Content.ToLower().Contains(searchKeyword.ToLower()));
+                filter = builder.Where(i => i.Content.ToLower().Contains(searchKeyword.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(categoryId))
-                filter = Builders<Question>.Filter.Eq(i => i.CategoryId, categoryId);
+                filter = builder.Eq(i => i.CategoryId, categoryId);
 
             var totalRow = await Collection.Find(filter).CountDocumentsAsync();
             var items = await Collection.Find(filter).SortByDescending(i => i.DateCreated).Skip((pageIndex - 1) * pageSize).Limit(pageSize).ToListAsync();

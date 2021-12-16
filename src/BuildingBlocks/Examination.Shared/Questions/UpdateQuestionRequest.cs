@@ -25,5 +25,7 @@ namespace Examination.Shared.Questions
         public List<AnswerDto> Answers { set; get; } = new List<AnswerDto>();
 
         public string Explain { get; set; }
+
+        public string CategoryName { get; set; }
     }
 }

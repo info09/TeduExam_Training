@@ -45,7 +45,10 @@ namespace AdminApp.Services
             };
 
             if (!string.IsNullOrEmpty(searchInput.Content))
-                queryStringParam.Add("searchKeyword", searchInput.Content);
+                queryStringParam.Add("content", searchInput.Content);
+
+            if(!string.IsNullOrEmpty(searchInput.CategoryId))
+                queryStringParam.Add("categoryId", searchInput.CategoryId);
 
 
             string url = QueryHelpers.AddQueryString("/api/v1/Questions", queryStringParam);
