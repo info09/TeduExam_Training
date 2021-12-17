@@ -27,16 +27,16 @@ namespace Examination.Infrastructure.MongoDb.Repositories
 
         public async Task<PagedList<Exam>> GetExamsPagingAsync(string categoryId, string searchKeyword, int pageIndex, int pageSize)
         {
-            var filter = Builders<Exam>.Filter.Empty;
+            FilterDefinition<Exam> filter = Builders<Exam>.Filter.Empty;
             if (!string.IsNullOrEmpty(searchKeyword))
-                filter = Builders<Exam>.Filter.Where(i => i.Name.ToLower().Contains(searchKeyword.ToLower()));
+                filter = Builders<Exam>.Filter.Where(s => s.Name.Contains(searchKeyword));
 
             if (!string.IsNullOrEmpty(categoryId))
-                filter = Builders<Exam>.Filter.Eq(i => i.CategoryId, categoryId);
+                filter = Builders<Exam>.Filter.Eq(s => s.CategoryId, categoryId);
 
             var totalRow = await Collection.Find(filter).CountDocumentsAsync();
             var items = await Collection.Find(filter)
-                .SortByDescending(i => i.DateCreated)
+                .SortByDescending(x => x.DateCreated)
                 .Skip((pageIndex - 1) * pageSize)
                 .Limit(pageSize)
                 .ToListAsync();

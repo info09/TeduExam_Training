@@ -38,5 +38,20 @@ namespace Examination.Application.Commands.V1.Exams.CreateExam
 
         [Required]
         public string CategoryId { get; set; }
+
+        public CreateExamCommand(string name, string shortDesc, string content, int numberOfQuestions, int? durationInMinutes, List<QuestionDto> questions, Level level, int numberOfQuestionCorrectForPass, bool isTimeRestricted, bool autoGenerateQuestion, string categoryId)
+        {
+            Name = name;
+            ShortDesc = shortDesc;
+            Content = content;
+            NumberOfQuestions = numberOfQuestions;
+            DurationInMinutes = durationInMinutes;
+            Questions = questions;
+            Level = level;
+            NumberOfQuestionCorrectForPass = numberOfQuestionCorrectForPass;
+            IsTimeRestricted = isTimeRestricted;
+            AutoGenerateQuestion = autoGenerateQuestion;
+            CategoryId = categoryId;
+        }
     }
 }

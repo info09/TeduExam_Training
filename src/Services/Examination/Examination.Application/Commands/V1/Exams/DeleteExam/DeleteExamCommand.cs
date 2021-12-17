@@ -3,11 +3,11 @@ using MediatR;
 
 namespace Examination.Application.Commands.V1.Exams.DeleteExam
 {
-    public class DeleleExamCommand : IRequest<ApiResult<bool>>
+    public class DeleteExamCommand : IRequest<ApiResult<bool>>
     {
         public string Id { get; set; }
 
-        public DeleleExamCommand(string id)
+        public DeleteExamCommand(string id)
         {
             Id = id;
         }

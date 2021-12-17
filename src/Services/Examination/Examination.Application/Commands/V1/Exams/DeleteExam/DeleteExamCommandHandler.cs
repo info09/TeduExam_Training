@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Examination.Application.Commands.V1.Exams.DeleteExam
 {
-    public class DeleteExamCommandHandler : IRequestHandler<DeleleExamCommand, ApiResult<bool>>
+    public class DeleteExamCommandHandler : IRequestHandler<DeleteExamCommand, ApiResult<bool>>
     {
         private readonly IExamRepository _examRepository;
 
@@ -16,7 +16,7 @@ namespace Examination.Application.Commands.V1.Exams.DeleteExam
             _examRepository = examRepository;
         }
 
-        public async Task<ApiResult<bool>> Handle(DeleleExamCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResult<bool>> Handle(DeleteExamCommand request, CancellationToken cancellationToken)
         {
             var examToDelete = await _examRepository.GetExamByIdAsync(request.Id);
 
