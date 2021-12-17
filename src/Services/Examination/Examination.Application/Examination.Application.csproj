@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <Folder Include="Behaviors\" />
+    <Folder Include="Commands\V1\Exams\CreateExam\" />
+    <Folder Include="Commands\V1\Exams\DeleteExam\" />
+    <Folder Include="Commands\V1\Exams\UpdateExam\" />
     <Folder Include="Queries\V1\Categories\GetAllCategories\" />
   </ItemGroup>
 

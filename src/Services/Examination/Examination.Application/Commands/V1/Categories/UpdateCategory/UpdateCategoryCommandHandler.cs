@@ -2,6 +2,7 @@
 using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,14 +25,14 @@ namespace Examination.Application.Commands.V1.Categories.UpdateCategory
             if (itemToUpdate == null)
             {
                 _logger.LogError($"Item is not found {request.Id}");
-                return new ApiErrorResult<bool>($"Item is not found {request.Id}");
+                return new ApiErrorResult<bool>((int)HttpStatusCode.BadRequest, $"Item is not found {request.Id}");
             }
 
             itemToUpdate.Name = request.Name;
             itemToUpdate.UrlPath = request.UrlPath;
 
             await _categoryRepository.UpdateAsync(itemToUpdate);
-            return new ApiSuccessResult<bool>(true, "Update successful");
+            return new ApiSuccessResult<bool>((int)HttpStatusCode.OK, true, "Update successful");
 
         }
     }

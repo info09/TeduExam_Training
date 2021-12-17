@@ -8,22 +8,24 @@
 
         public T ResultObj { get; set; }
 
+        public int StatusCode { get; set; }
+
         public ApiResult()
         {
-
         }
-
-        public ApiResult(bool isSuccessed, string message = null)
+        public ApiResult(int statusCode, bool isSuccessed, string message = null)
         {
             Message = message;
             IsSuccessed = isSuccessed;
+            StatusCode = statusCode;
         }
 
-        public ApiResult(bool isSuccessed, T resultObj, string message = null)
+        public ApiResult(int statusCode, bool isSuccessed, T resultObj, string message = null)
         {
-            IsSuccessed = isSuccessed;
-            Message = message;
             ResultObj = resultObj;
+            Message = message;
+            IsSuccessed = isSuccessed;
+            StatusCode = statusCode;
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Examination.API.Controllers.V1;
-using Examination.Application.Queries.V1.Exams.GetHomeExamList;
+using Examination.Application.Queries.V1.Exams.GetAllExams;
 
 namespace Examination.API.Controllers
 {
@@ -22,7 +22,7 @@ namespace Examination.API.Controllers
         public async Task<IActionResult> GetExamListAsync()
         {
             _logger.LogInformation("BEGIN: GetExamList");
-            var query = new GetHomeExamListQuery();
+            var query = new GetAllExamsQuery();
             var result = await _mediator.Send(query);
 
             _logger.LogInformation("END: GetExamList");

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Examination.Application.Commands.V1.Categories.CreateCategory;
+using Examination.Application.Extensions;
 using Examination.Domain.AggregateModels.CategoryAggregate;
 using Examination.Domain.AggregateModels.QuestionAggregate;
 using Examination.Shared.Enum;
@@ -11,9 +12,9 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Examination.Application.Extensions;
 
 namespace Examination.Application.Commands.V1.Questions.CreateQuestion
 {
@@ -37,13 +38,13 @@ namespace Examination.Application.Commands.V1.Questions.CreateQuestion
         {
             if (request.Answers?.Count(x => x.IsCorrect) > 1 && request.QuestionType == QuestionType.SingleSelection)
             {
-                return new ApiErrorResult<QuestionDto>("Single choice question cannot have multiple correct answers.");
+                return new ApiErrorResult<QuestionDto>((int)HttpStatusCode.BadRequest, "Single choice question cannot have multiple correct answers.");
             }
 
             var category = await _categoryRepository.GetCategoryByIdAsync(request.CategoryId);
             var questionId = ObjectId.GenerateNewId().ToString();
 
-            foreach (var item in request.Answers)
+            foreach (var item in request?.Answers)
             {
                 if (string.IsNullOrEmpty(item.Id))
                 {
@@ -55,10 +56,10 @@ namespace Examination.Application.Commands.V1.Questions.CreateQuestion
 
             var itemToAdd = new Question(questionId, request.Content, request.QuestionType, request.Level,
                 request.CategoryId, answers, request.Explain, _httpContextAccessor.GetUserId(), category.Name);
-            
+
             await _questionRepository.InsertAsync(itemToAdd);
             var result = _mapper.Map<Question, QuestionDto>(itemToAdd);
-            return new ApiSuccessResult<QuestionDto>(result);
+            return new ApiSuccessResult<QuestionDto>((int)HttpStatusCode.OK, result);
 
         }
     }

@@ -2,6 +2,7 @@
 using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,11 +24,11 @@ namespace Examination.Application.Commands.V1.Categories.DeleteCategory
             if (itemToDelete == null)
             {
                 _logger.LogError($"Item is not found {request.Id}");
-                return new ApiErrorResult<bool>($"Item is not found {request.Id}");
+                return new ApiErrorResult<bool>((int)HttpStatusCode.BadRequest, $"Item is not found {request.Id}");
             }
 
             await _categoryRepository.DeleteAsync(request.Id);
-            return new ApiSuccessResult<bool>(true, "Delete successful");
+            return new ApiSuccessResult<bool>((int)HttpStatusCode.OK, true, "Delete successful");
 
         }
     }

@@ -5,6 +5,7 @@ using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +32,7 @@ namespace Examination.Application.Queries.V1.Categories.GetCategoryById
 
             _logger.LogInformation("END: GetCategoryByIdQueryHandler");
 
-            return new ApiSuccessResult<CategoryDto>(item);
+            return new ApiSuccessResult<CategoryDto>((int)HttpStatusCode.OK, item);
         }
     }
 }

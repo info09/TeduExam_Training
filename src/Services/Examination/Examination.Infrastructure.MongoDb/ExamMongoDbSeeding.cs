@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Examination.Domain.AggregateModels.CategoryAggregate;
+﻿using Examination.Domain.AggregateModels.CategoryAggregate;
 using Examination.Domain.AggregateModels.ExamAggregate;
 using Examination.Domain.AggregateModels.QuestionAggregate;
 using Examination.Infrastructure.MongoDb.SeedWork;
@@ -13,15 +9,19 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Polly;
 using Polly.Retry;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Examination.Infrastructure.MongoDb
 {
     public class ExamMongoDbSeeding
     {
-        public async Task SeedAsync(IMongoClient mongoClient, IOptions<ExamSettings> settings, ILogger<ExamMongoDbSeeding> logger)
+        public async Task SeedAsync(IMongoClient mongoClient, IOptions<ExamSettings> settings,
+               ILogger<ExamMongoDbSeeding> logger)
         {
             var policy = CreatePolicy(logger, nameof(ExamMongoDbSeeding));
-
             await policy.ExecuteAsync(async () =>
             {
                 var databaseName = settings.Value.DatabaseSettings.DatabaseName;
@@ -30,26 +30,28 @@ namespace Examination.Infrastructure.MongoDb
                 var categoryId2 = ObjectId.GenerateNewId().ToString();
                 var categoryId3 = ObjectId.GenerateNewId().ToString();
                 var categoryId4 = ObjectId.GenerateNewId().ToString();
-
                 if (await database.GetCollection<Category>(Constants.Collections.Category).EstimatedDocumentCountAsync() == 0)
                 {
-                    await database.GetCollection<Category>(Constants.Collections.Category).InsertManyAsync(new List<Category>()
-                    {
-                        new Category(categoryId1, "Category 1", "category-1"),
-                        new Category(categoryId2, "Category 2", "category-2"),
-                        new Category(categoryId3, "Category 3", "category-3"),
-                        new Category(categoryId4, "Category 4", "category-4")
-                    });
+                    await database.GetCollection<Category>(Constants.Collections.Category)
+                        .InsertManyAsync(new List<Category>()
+                        {
+                            new Category(categoryId1,"Category 1","category-1"),
+                            new Category(categoryId2,"Category 2","category-1"),
+                            new Category(categoryId3,"Category 3","category-3"),
+                            new Category(categoryId4,"Category 4","category-4"),
+                        });
                 }
-
-                if (await database.GetCollection<Question>(Constants.Collections.Question).EstimatedDocumentCountAsync() == 0)
+                if (await database.GetCollection<Question>(Constants.Collections.Question).EstimatedDocumentCountAsync() ==
+                    0)
                 {
-                    await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions(categoryId1));
+                    await database.GetCollection<Question>(Constants.Collections.Question)
+                        .InsertManyAsync(GetPredefinedQuestions(categoryId1));
                 }
-
-                if (await database.GetCollection<Exam>(Constants.Collections.Exam).EstimatedDocumentCountAsync() == 0)
+                if (await database.GetCollection<Exam>(Constants.Collections.Exam).EstimatedDocumentCountAsync() ==
+                    0)
                 {
-                    await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams(categoryId1));
+                    await database.GetCollection<Exam>(Constants.Collections.Exam)
+                        .InsertManyAsync(GetPredefinedExams(categoryId1));
                 }
             });
         }
@@ -61,24 +63,23 @@ namespace Examination.Infrastructure.MongoDb
                 new Exam("Exam 1", "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
                     "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>",
                     5,
-                    TimeSpan.FromMinutes(10),
-                    GetPredefinedQuestions(categoryId1).Take(5),
+                    10,
+                    GetPredefinedQuestions(categoryId1).Take(5).ToList(),
                     Level.Easy,
                     null,
                     4,
-                    true),
+                    true, null, null),
                 new Exam("Exam 2", "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
                     "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>",
                     5,
-                    TimeSpan.FromMinutes(5),
-                    GetPredefinedQuestions(categoryId1).Skip(5).Take(5),
+                    5,
+                    GetPredefinedQuestions(categoryId1).Skip(5).Take(5).ToList(),
                     Level.Medium,
                     null,
                     4,
-                    true),
+                    true, null, null),
             };
         }
-
         private List<Question> GetPredefinedQuestions(string categoryId1)
         {
             return new List<Question>()
@@ -175,18 +176,17 @@ namespace Examination.Infrastructure.MongoDb
                     "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."),
             };
         }
-
         private AsyncRetryPolicy CreatePolicy(ILogger<ExamMongoDbSeeding> logger, string prefix, int retries = 3)
         {
-            return Policy.Handle<MongoException>()
-                .WaitAndRetryAsync(
-                retryCount: retries,
-                sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                onRetry: (exception, timeSpan, retry, ctx) =>
-                                            {
-                                                logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
-                                            }
-                                    );
+            return Policy.Handle<MongoException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
+                    }
+                );
         }
 
     }

@@ -2,6 +2,7 @@
 using Examination.Shared.SeedWork;
 using MediatR;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace Examination.Application.Commands.V1.Exams.StartExam
                 await _repository.InsertAsync(examResult);
             }
 
-            return new ApiSuccessResult<bool>(true);
+            return new ApiSuccessResult<bool>((int)HttpStatusCode.OK, true);
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -26,7 +27,7 @@ namespace Examination.Application.Queries.V1.Categories.GetAllCategories
 
             var items = _mapper.Map<List<CategoryDto>>(result);
 
-            return new ApiSuccessResult<List<CategoryDto>>(items);
+            return new ApiSuccessResult<List<CategoryDto>>((int)HttpStatusCode.OK, items);
         }
     }
 }

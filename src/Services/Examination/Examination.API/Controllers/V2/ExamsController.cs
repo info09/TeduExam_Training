@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Examination.Application.Queries.V1.Exams.GetHomeExamList;
+using Examination.Application.Queries.V1.Exams.GetAllExams;
 
 namespace Examination.API.Controllers.V2
 {
@@ -20,7 +20,7 @@ namespace Examination.API.Controllers.V2
         [HttpGet]
         public async Task<IActionResult> GetExamListAsync()
         {
-            var query = new GetHomeExamListQuery();
+            var query = new GetAllExamsQuery();
             var result = await _mediator.Send(query);
 
             return Ok(result);

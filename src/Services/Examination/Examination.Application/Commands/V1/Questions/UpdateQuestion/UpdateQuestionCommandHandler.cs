@@ -1,17 +1,17 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
+using Examination.Application.Extensions;
+using Examination.Domain.AggregateModels.CategoryAggregate;
 using Examination.Domain.AggregateModels.QuestionAggregate;
 using Examination.Shared.Questions;
 using Examination.Shared.SeedWork;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Examination.Application.Extensions;
-using Examination.Domain.AggregateModels.CategoryAggregate;
-using Microsoft.AspNetCore.Http;
-using MongoDB.Bson;
 
 namespace Examination.Application.Commands.V1.Questions.UpdateQuestion
 {
@@ -38,7 +38,7 @@ namespace Examination.Application.Commands.V1.Questions.UpdateQuestion
             if (itemToUpdate == null)
             {
                 _logger.LogError($"Item is not found {request.Id}");
-                return new ApiErrorResult<bool>($"Item is not found {request.Id}");
+                return new ApiErrorResult<bool>((int)HttpStatusCode.BadRequest, $"Item is not found {request.Id}");
             }
 
             var category = await _categoryRepository.GetCategoryByIdAsync(request.CategoryId);
@@ -63,7 +63,7 @@ namespace Examination.Application.Commands.V1.Questions.UpdateQuestion
             itemToUpdate.OwnerUserId = _httpContextAccessor.GetUserId();
 
             await _questionRepository.UpdateAsync(itemToUpdate);
-            return new ApiSuccessResult<bool>(true, "Update success");
+            return new ApiSuccessResult<bool>((int)HttpStatusCode.OK, true, "Update success");
 
         }
     }

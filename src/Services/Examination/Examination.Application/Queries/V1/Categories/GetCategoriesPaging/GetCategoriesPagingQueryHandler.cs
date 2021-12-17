@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace Examination.Application.Queries.V1.Categories.GetCategoriesPaging
 
             _logger.LogInformation("END: GetCategoriesPagingQueryHandler");
 
-            return new ApiSuccessResult<PagedList<CategoryDto>>(new PagedList<CategoryDto>(items,
+            return new ApiSuccessResult<PagedList<CategoryDto>>((int)HttpStatusCode.OK, new PagedList<CategoryDto>(items,
                 result.MetaData.TotalCount, request.PageIndex, request.PageSize));
         }
     }

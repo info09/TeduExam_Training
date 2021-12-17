@@ -5,7 +5,7 @@ using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
-using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +37,7 @@ namespace Examination.Application.Commands.V1.Categories.CreateCategory
 
             await _categoryRepository.InsertAsync(itemToAdd);
             var result = _mapper.Map<Category, CategoryDto>(itemToAdd);
-            return new ApiSuccessResult<CategoryDto>(result);
+            return new ApiSuccessResult<CategoryDto>((int)HttpStatusCode.OK, result);
 
         }
     }

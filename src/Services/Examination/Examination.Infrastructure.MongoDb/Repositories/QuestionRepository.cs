@@ -1,9 +1,11 @@
 ﻿using Examination.Domain.AggregateModels.QuestionAggregate;
 using Examination.Infrastructure.MongoDb.SeedWork;
+using Examination.Shared.Enum;
 using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Examination.Infrastructure.MongoDb.Repositories
@@ -23,12 +25,14 @@ namespace Examination.Infrastructure.MongoDb.Repositories
             var builder = Builders<Question>.Filter;
             FilterDefinition<Question> filter = builder.Empty;
             if (!string.IsNullOrEmpty(searchKeyword))
-            {
                 filter = builder.Where(i => i.Content.ToLower().Contains(searchKeyword.ToLower()));
-            }
 
             if (!string.IsNullOrEmpty(categoryId))
-                filter = builder.Eq(i => i.CategoryId, categoryId);
+            {
+                //filter = builder.Eq(i => i.CategoryId, categoryId);
+                filter = builder.And(filter, builder.Eq(i => i.CategoryId, categoryId));
+            }
+                
 
             var totalRow = await Collection.Find(filter).CountDocumentsAsync();
             var items = await Collection.Find(filter).SortByDescending(i => i.DateCreated).Skip((pageIndex - 1) * pageSize).Limit(pageSize).ToListAsync();
@@ -46,6 +50,14 @@ namespace Examination.Infrastructure.MongoDb.Repositories
         {
             FilterDefinition<Question> filter = Builders<Question>.Filter.Eq(i => i.Content, content);
             return await Collection.Find(filter).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Question>> GetRandomQuestionsForExamAsync(string categoryId, Level level, int numberOfQuestion)
+        {
+            var filter = Builders<Question>.Filter.Where(i => i.CategoryId == categoryId && i.Level == level);
+            var items = await Collection.Find(filter).Limit(numberOfQuestion).ToListAsync();
+
+            return items;
         }
     }
 }

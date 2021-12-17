@@ -5,6 +5,7 @@ using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace Examination.Application.Queries.V1.Questions.GetQuestionById
             var result = await _questionRepository.GetQuestionByIdAsync(request.Id);
             var data = _mapper.Map<QuestionDto>(result);
             _logger.LogInformation("END: GetQuestionByIdAsync");
-            return new ApiSuccessResult<QuestionDto>(data);
+            return new ApiSuccessResult<QuestionDto>((int)HttpStatusCode.OK, data);
         }
     }
 }
