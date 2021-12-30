@@ -15,7 +15,7 @@ namespace Examination.Shared.Exams
 
         public string Content { get; set; }
 
-        [Required] public int NumberOfQuestion { get; set; }
+        [Required] public int NumberOfQuestions { get; set; }
 
         public int? DurationInMinutes { get; set; }
 

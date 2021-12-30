@@ -30,6 +30,7 @@ namespace Examination.Shared.Exams
         public int NumberOfQuestionCorrectForPass { get; set; }
 
         public bool IsTimeRestricted { get; set; }
+        public bool AutoGenerateQuestion { set; get; }
         public string CategoryId { get; set; }
         public string CategoryName { get; set; }
     }

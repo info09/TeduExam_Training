@@ -116,7 +116,7 @@
 	async Task HandleLogout()
 	{
 		await AuthService.Logout();
-		NavigationManager.NavigateTo($"{UrlConstants.Login}?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
+		NavigationManager.NavigateTo(UrlConstants.Login);
 	}
 
     private List<BreadcrumbItem> _items = new List<BreadcrumbItem>

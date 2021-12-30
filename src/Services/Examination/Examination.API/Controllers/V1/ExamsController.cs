@@ -60,7 +60,7 @@ namespace Examination.API.Controllers.V1
         public async Task<IActionResult> UpdateExamAsync([FromBody] UpdateExamRequest request)
         {
             var command = new UpdateExamCommand(request.Id, request.Name, request.ShortDesc, request.Content,
-                request.NumberOfQuestion, request.DurationInMinutes, request.Questions, request.Level,
+                request.NumberOfQuestions, request.DurationInMinutes, request.Questions, request.Level,
                 request.NumberOfQuestionCorrectForPass, request.IsTimeRestricted, request.AutoGenerateQuestion,
                 request.CategoryId);
 
