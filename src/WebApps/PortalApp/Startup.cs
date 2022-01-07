@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PortalApp.Core;
 
 namespace PortalApp
 {
@@ -23,7 +24,29 @@ namespace PortalApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddRazorPages();
+
+            services.AddAuthentication(option =>
+                {
+                    option.DefaultScheme = AuthenticationConst.SignInScheme;
+                    option.DefaultChallengeScheme = AuthenticationConst.OidcAuthenticationScheme;
+                })
+                .AddCookie(AuthenticationConst.SignInScheme, options =>
+                {
+                    options.Cookie.Name = Configuration["IdentityServerConfig:CookieName"];
+                    options.LoginPath = "/login.html";
+                })
+                .AddOpenIdConnect(AuthenticationConst.OidcAuthenticationScheme, options =>
+                {
+                    options.Authority = Configuration["IdentityServerConfig:IdentityServerUrl"];
+                    options.ClientId = Configuration["IdentityServerConfig:ClientId"];
+                    options.ClientSecret = Configuration["IdentityServerConfig:ClientSecret"];
+
+                    options.ResponseType = "code";
+                    options.RequireHttpsMetadata = false;
+                    options.SaveTokens = true;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +67,8 @@ namespace PortalApp
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
