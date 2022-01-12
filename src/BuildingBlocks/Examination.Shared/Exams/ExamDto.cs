@@ -16,7 +16,7 @@ namespace Examination.Shared.Exams
 
         public int NumberOfQuestions { get; set; }
 
-        //public TimeSpan? Duration { get; set; }
+        public int? Duration { get; set; }
         public int? DurationInMinutes { get; set; }
 
         public List<QuestionDto> Questions { get; set; }
@@ -30,7 +30,6 @@ namespace Examination.Shared.Exams
         public int NumberOfQuestionCorrectForPass { get; set; }
 
         public bool IsTimeRestricted { get; set; }
-        public bool AutoGenerateQuestion { set; get; }
         public string CategoryId { get; set; }
         public string CategoryName { get; set; }
     }
