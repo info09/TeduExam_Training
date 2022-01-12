@@ -23,7 +23,7 @@ namespace AdminApp.Services
         {
             var queryParam = new Dictionary<string, string>
             {
-                ["pageIndex"] = search.PageNumber.ToString(),
+                ["pageNumber"] = search.PageNumber.ToString(),
                 ["pageSize"] = search.PageSize.ToString()
             };
 
